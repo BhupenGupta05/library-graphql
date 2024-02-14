@@ -1,6 +1,6 @@
 import UpdateAuthor from "./UpdateAuthor"
 
-const Authors = ({authors}) => {
+const Authors = ({authors, isLoggedIn}) => {
   
     return (
       <div>
@@ -22,7 +22,7 @@ const Authors = ({authors}) => {
           </tbody>
         </table>
 
-        <UpdateAuthor />
+        {isLoggedIn && <UpdateAuthor />}
       </div>
     )
   }
