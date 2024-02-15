@@ -1,4 +1,40 @@
+import { useState } from "react"
+import Filter from "./Filter";
+
 const Books = ({books}) => {  
+  const [selectedGenres, setSelectedGenres ] = useState([])
+
+  const handleGenreToggle = (genre) => {
+    setSelectedGenres((prevSelectedGenres) => {
+      if (prevSelectedGenres.includes(genre)) {
+        // Genre is already selected, remove it
+        return prevSelectedGenres.filter(selectedGenre => selectedGenre !== genre)
+      } else {
+        // Genre is not selected, add it
+        return [...prevSelectedGenres, genre];
+      }
+    })
+  }
+
+  const filteredBooks = selectedGenres.length === 0
+    ? books
+    : books.filter(book => selectedGenres.every(selectedGenre => book.genres.includes(selectedGenre)))
+
+  //function to create set of genres
+  const createSet = (...inputArrays) => {
+    let uniqueValues = new Set()
+
+    inputArrays.forEach((arr) => {
+      arr.forEach((ele) => {
+        uniqueValues.add(ele)
+      })
+    })
+
+    return Array.from(uniqueValues)
+  }
+
+  const allGenres = createSet(...books.map((book) => book.genres))
+  console.log(allGenres)
   
     return (
       <div>
@@ -11,7 +47,7 @@ const Books = ({books}) => {
               <th>author</th>
               <th>published</th>
             </tr>
-            {books.map((a) => (
+            {filteredBooks.map((a) => (
               <tr key={a.title}>
                 <td>{a.title}</td>
                 <td>{a.author.name}</td>
@@ -20,6 +56,12 @@ const Books = ({books}) => {
             ))}
           </tbody>
         </table>
+
+        <Filter 
+      allGenres={allGenres}
+      selectedGenres={selectedGenres}
+      onGenreToggle={handleGenreToggle}/>
+
       </div>
     )
   }

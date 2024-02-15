@@ -19,6 +19,7 @@ const App = () => {
 
   const authorsResult = useQuery(ALL_AUTHORS)
   const booksResult = useQuery(ALL_BOOKS)
+  console.log(booksResult);
 
   if (authorsResult.loading || booksResult.loading) {
     return <div>loading...</div>
@@ -38,19 +39,6 @@ const App = () => {
   }
 
   const isLoggedIn = !!token
-
-  // if (!token) {
-  //   return (
-  //     <div>
-  //       <Notify errorMessage={errorMessage} />
-  //       <h2>Login</h2>
-  //       <LoginForm
-  //         setToken={setToken}
-  //         setError={notify}
-  //       />
-  //     </div>
-  //   )
-  // }
 
   return (
     <Router>
