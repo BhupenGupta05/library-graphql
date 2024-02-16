@@ -1,4 +1,4 @@
-import { Route, BrowserRouter as Router, Routes, Link } from 'react-router-dom'
+import { Route, Routes, Link, useNavigate } from 'react-router-dom'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
@@ -13,6 +13,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [token, setToken] = useState(localStorage.getItem('library-user-token') || null)
   const client = useApolloClient()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const storedToken = localStorage.getItem('library-user-token')
@@ -27,7 +28,6 @@ const App = () => {
 
   const authorsResult = useQuery(ALL_AUTHORS)
   const booksResult = useQuery(ALL_BOOKS)
-  const userResult = useQuery(USER)
 
   if (authorsResult.loading || booksResult.loading) {
     return <div>loading...</div>
@@ -44,12 +44,13 @@ const App = () => {
     setToken(null)    
     localStorage.removeItem('library-user-token')   
     client.resetStore()  
+    navigate('/')
   }
 
   const isLoggedIn = !!token
 
   return (
-    <Router>
+    <>
       <div>
         <Notify errorMessage={errorMessage}/>
         {isLoggedIn ? (
@@ -75,10 +76,10 @@ const App = () => {
         <Route path='/authors' element={<Authors authors={authorsResult.data.allAuthors} isLoggedIn={isLoggedIn}/>} />
         <Route path='/books' element={<Books books={booksResult.data.allBooks}/>} />
         <Route path='/add' element={<NewBook setError={notify}/>} />
-        <Route path='/recommend' element={<Recommendations books={booksResult.data.allBooks} user={userResult.data.me}/>} />
+        <Route path='/recommend' element={<Recommendations books={booksResult.data.allBooks} />} />
         <Route path='/login' element={<LoginForm setToken={setToken} setError={notify}/>} />
       </Routes>
-    </Router>
+    </>
   )
 }
 

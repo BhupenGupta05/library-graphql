@@ -1,15 +1,22 @@
-const Books = ({books, user}) => {  
-  if(!user) {
+import { useQuery } from "@apollo/client"
+import { USER } from "../queries"
+
+const Books = ({books}) => { 
+
+  const userResult = useQuery(USER)
+  console.log(userResult)
+
+  if(userResult.loading) {
     return (
       <div>loading...</div>
     )
   }
-  const filteredBooks = books.filter(book => book.genres.includes(user.favouriteGenre))
+  const filteredBooks = books.filter(book => book.genres.includes(userResult.data.me.favouriteGenre))
   
     return (
       <div>
         <h2>recommendations</h2>
-        <p>books in your favourite genre: <strong>{user.favouriteGenre}</strong></p>
+        <p>books in your favourite genre: <strong>{userResult.data.me.favouriteGenre}</strong></p>
   
         <table>
           <tbody>

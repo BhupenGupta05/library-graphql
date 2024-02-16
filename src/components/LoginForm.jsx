@@ -19,7 +19,6 @@ const LoginForm = ({setError, setToken}) => {
                 localStorage.setItem('library-user-token', authToken)
                 navigate('/')
             }
-            
         }
     })
 
