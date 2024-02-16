@@ -1,8 +1,8 @@
 import { useState } from "react"
-import Filter from "./Filter";
+import Filter from "./Filter"
 
 const Books = ({books}) => {  
-  const [selectedGenres, setSelectedGenres ] = useState([])
+  const [selectedGenres, setSelectedGenres] = useState([])
 
   const handleGenreToggle = (genre) => {
     setSelectedGenres((prevSelectedGenres) => {
@@ -11,7 +11,7 @@ const Books = ({books}) => {
         return prevSelectedGenres.filter(selectedGenre => selectedGenre !== genre)
       } else {
         // Genre is not selected, add it
-        return [...prevSelectedGenres, genre];
+        return [...prevSelectedGenres, genre]
       }
     })
   }
@@ -34,7 +34,6 @@ const Books = ({books}) => {
   }
 
   const allGenres = createSet(...books.map((book) => book.genres))
-  console.log(allGenres)
   
     return (
       <div>

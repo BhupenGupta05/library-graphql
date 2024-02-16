@@ -13,18 +13,21 @@ const LoginForm = ({setError, setToken}) => {
             setError(error.graphQLErrors[0].message)
         },
         onCompleted: (data) => {
-            const authToken = data.login.value
-            setToken(authToken)
-            navigate('/')
+            if(data && data.login) {
+                const authToken = data.login.value
+                setToken(authToken)
+                localStorage.setItem('library-user-token', authToken)
+                navigate('/')
+            }
+            
         }
     })
 
     useEffect(() => {
-        if(result.data) {
+        if (result.data && result.data.login) {
             const token = result.data.login.value
-            setToken(token)
             localStorage.setItem('library-user-token', token)
-        }
+         }
     }, [result.data])
 
     const submit = async (e) => {

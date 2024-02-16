@@ -4,14 +4,22 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Notify from './components/Notify'
 import LoginForm from './components/LoginForm'
-import { ALL_AUTHORS, ALL_BOOKS } from './queries'
+import Recommendations from './components/Recommendations'
+import { ALL_AUTHORS, ALL_BOOKS, USER } from './queries'
 import { useApolloClient, useQuery } from '@apollo/client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const App = () => {
-  const[errorMessage, setErrorMessage] = useState(null)
-  const [token, setToken] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [token, setToken] = useState(localStorage.getItem('library-user-token') || null)
   const client = useApolloClient()
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('library-user-token')
+      if (storedToken) {
+         setToken(storedToken)
+      }
+  },[])
 
   const padding = {
     padding: 5
@@ -19,7 +27,7 @@ const App = () => {
 
   const authorsResult = useQuery(ALL_AUTHORS)
   const booksResult = useQuery(ALL_BOOKS)
-  console.log(booksResult);
+  const userResult = useQuery(USER)
 
   if (authorsResult.loading || booksResult.loading) {
     return <div>loading...</div>
@@ -34,7 +42,7 @@ const App = () => {
 
   const logout = () => {    
     setToken(null)    
-    localStorage.clear()   
+    localStorage.removeItem('library-user-token')   
     client.resetStore()  
   }
 
@@ -44,23 +52,30 @@ const App = () => {
     <Router>
       <div>
         <Notify errorMessage={errorMessage}/>
-        <Link style={padding} to="/authors">authors</Link>
-        <Link style={padding} to="/books">books</Link>
         {isLoggedIn ? (
           <>
+          <Link style={padding} to="/authors">authors</Link>
+          <Link style={padding} to="/books">books</Link>
             <Link style={padding} to="/add">add book</Link>
+            <Link style={padding} to="/recommend">recommend</Link>
             <button onClick={logout}>logout</button>
           </>
         ) : (
+          <>
+          <Link style={padding} to="/authors">authors</Link>
+          <Link style={padding} to="/books">books</Link>
           <Link style={padding} to="/login">login</Link>
+          </>
+          
         )}
       </div>
 
       <Routes>
         <Route path='/' element={<Authors authors={authorsResult.data.allAuthors} isLoggedIn={isLoggedIn} />} />
-        <Route path='/authors' element={<Authors authors={authorsResult.data.allAuthors}/>} />
+        <Route path='/authors' element={<Authors authors={authorsResult.data.allAuthors} isLoggedIn={isLoggedIn}/>} />
         <Route path='/books' element={<Books books={booksResult.data.allBooks}/>} />
         <Route path='/add' element={<NewBook setError={notify}/>} />
+        <Route path='/recommend' element={<Recommendations books={booksResult.data.allBooks} user={userResult.data.me}/>} />
         <Route path='/login' element={<LoginForm setToken={setToken} setError={notify}/>} />
       </Routes>
     </Router>
