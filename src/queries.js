@@ -66,3 +66,16 @@ export const USER = gql`
             favouriteGenre
         }
     }`
+
+export const BOOK_ADDED = gql`
+    subscription {
+        bookAdded {
+            title
+            author {
+                name
+            }
+            id
+            published
+            genres
+        }
+    }`
