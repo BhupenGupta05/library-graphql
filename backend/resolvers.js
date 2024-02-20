@@ -1,4 +1,6 @@
 const { GraphQLError } = require('graphql')
+const { PubSub } = require('graphql-subscriptions')
+const pubsub = new PubSub()
 const jwt = require('jsonwebtoken')
 const Author = require('./models/author')
 const Book = require('./models/book')
@@ -53,6 +55,11 @@ const resolvers = {
         return context.currentUser
       }
     },
+    Subscription: {
+        bookAdded:{
+            subscribe: () => pubsub.asyncIterator('BOOK_ADDED')
+        }
+    },
     Mutation: {
       addBook: async (root, args, context) => {
         try {      
@@ -76,6 +83,9 @@ const resolvers = {
           await book.save()
           currentUser.store = currentUser.store.concat(book)
           await currentUser.save()
+
+          pubsub.publish('BOOK_ADDED', { bookAdded: book })
+
           return book
         } catch (error) {        
           console.error('Error in addBook mutation:', error.message)
