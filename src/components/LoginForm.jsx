@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client"
 import { useEffect, useState } from "react"
-import { LOGIN } from "../queries"
+import LOGIN from '../graphql/mutations/login'
 import { useNavigate } from 'react-router-dom'
 
 const LoginForm = ({setError, setToken}) => {

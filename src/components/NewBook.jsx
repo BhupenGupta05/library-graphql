@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { useState } from 'react'
-import { ADD_BOOK, ALL_AUTHORS, ALL_BOOKS } from '../queries'
+import ADD_BOOK from '../graphql/mutations/addBook'
+import ALL_BOOKS from '../graphql/queries/allBooks'
 import { updateCache } from '../App'
 
 const NewBook = ({setError}) => {
