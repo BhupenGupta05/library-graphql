@@ -1,6 +1,6 @@
 const Filter = ({allGenres, selectedGenres, onGenreToggle}) => {
   return (
-    <div>
+    <div style={{marginLeft: '1rem'}}>
 
       {allGenres.map(genre => (
         <button key={genre} 

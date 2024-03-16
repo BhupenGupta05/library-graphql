@@ -3,6 +3,7 @@ import { useState } from 'react'
 import ADD_BOOK from '../graphql/mutations/addBook'
 import ALL_BOOKS from '../graphql/queries/allBooks'
 import { updateCache } from '../App'
+import { Button, FormControl, TextField, Typography } from '@mui/material'
 
 const NewBook = ({setError}) => {
   const [title, setTitle] = useState('')
@@ -42,41 +43,47 @@ const NewBook = ({setError}) => {
 
   return (
     <div>
-      <form onSubmit={submit}>
+      <Typography variant='h4' sx={{ my:2 ,ml:2 }}>Add a book</Typography>
+      <FormControl onSubmit={submit} sx={{ml:2}}>
         <div>
-          title
-          <input
+          <Typography>title</Typography>
+          <TextField
             value={title}
             onChange={({ target }) => setTitle(target.value)}
+            variant="outlined"
           />
         </div>
         <div>
-          author
-          <input
+          <Typography>author</Typography>
+          <TextField
             value={author}
             onChange={({ target }) => setAuthor(target.value)}
+            variant="outlined"
           />
         </div>
         <div>
-          published
-          <input
+          <Typography>published</Typography>
+          <TextField
+          sx={{mb:2}}
             type="number"
             value={published}
             onChange={({ target }) => setPublished(target.value)}
+            variant="outlined"
           />
         </div>
         <div>
-          <input
+          <TextField
             value={genre}
             onChange={({ target }) => setGenre(target.value)}
+            variant="outlined"
           />
-          <button onClick={addGenre} type="button">
+          <Button sx={{m:2}} onClick={addGenre} type="button" variant='contained'>
             add genre
-          </button>
+          </Button>
         </div>
-        <div>genres: {genres.join(' ')}</div>
-        <button type="submit">create book</button>
-      </form>
+        <Typography variant='h5' sx={{mb:2}}>genres: {genres.join(' ')}</Typography>
+        <Button type="submit" variant='contained'>create book</Button>
+      </FormControl>
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import {Table, TableHead, TableBody, TableRow, TableCell, Typography} from '@mui/material'
 import Filter from "./Filter"
 
 const Books = ({books}) => {  
@@ -37,29 +38,31 @@ const Books = ({books}) => {
   
     return (
       <div>
-        <h2>books</h2>
-  
-        <table>
-          <tbody>
-            <tr>
-              <th></th>
-              <th>author</th>
-              <th>published</th>
-            </tr>
-            {filteredBooks.map((a) => (
-              <tr key={a.title}>
-                <td>{a.title}</td>
-                <td>{a.author.name}</td>
-                <td>{a.published}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Typography variant="h4" sx={{my: 2, ml:2}}>books</Typography>
 
         <Filter 
       allGenres={allGenres}
       selectedGenres={selectedGenres}
       onGenreToggle={handleGenreToggle}/>
+  
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Author</TableCell>
+              <TableCell>Published</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredBooks.map((a) => (
+              <TableRow key={a.title}>
+                <TableCell>{a.title}</TableCell>
+                <TableCell>{a.author.name}</TableCell>
+                <TableCell>{a.published}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
 
       </div>
     )

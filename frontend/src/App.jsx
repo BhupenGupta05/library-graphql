@@ -10,6 +10,9 @@ import ALL_BOOKS from '../src/graphql/queries/allBooks'
 import BOOK_ADDED from '../src/graphql/queries/subscription'
 import { useApolloClient, useQuery, useSubscription } from '@apollo/client'
 import { useEffect, useState } from 'react'
+import { AppBar, Toolbar } from '@mui/material'
+import Button from '@mui/material/Button'
+import USER from './graphql/queries/userDetails'
 
 // function that takes care of manipulating cache
 export const updateCache = (cache, query, addedBook) => {  
@@ -57,6 +60,7 @@ const App = () => {
 
   const authorsResult = useQuery(ALL_AUTHORS)
   const booksResult = useQuery(ALL_BOOKS)
+  
 
   if (authorsResult.loading || booksResult.loading) {
     return <div>loading...</div>
@@ -80,25 +84,33 @@ const App = () => {
 
   return (
     <>
-      <div>
+      <AppBar position='static'>
+        <Toolbar>
         <Notify errorMessage={errorMessage}/>
         {isLoggedIn ? (
           <>
-          <Link style={padding} to="/authors">authors</Link>
-          <Link style={padding} to="/books">books</Link>
-            <Link style={padding} to="/add">add book</Link>
-            <Link style={padding} to="/recommend">recommend</Link>
-            <button onClick={logout}>logout</button>
+          <Button style={padding} LinkComponent={Link} to="/" color="inherit" variant='text'>logo</Button>
+          <Button style={padding} LinkComponent={Link} to="/authors" color="inherit" variant='text'>authors</Button>
+          <Button style={padding} LinkComponent={Link} to="/books" color="inherit" variant='text'>books</Button>
+            <Button style={padding} LinkComponent={Link} to="/add" color="inherit" variant='text'>add book</Button>
+            <Button style={padding} LinkComponent={Link} to="/recommend" color="inherit" variant='text'>recommend</Button>
+            <Button variant='outlined' onClick={logout} color="inherit">  
+              logout
+              </Button>
           </>
         ) : (
           <>
-          <Link style={padding} to="/authors">authors</Link>
-          <Link style={padding} to="/books">books</Link>
-          <Link style={padding} to="/login">login</Link>
+          <Button style={padding} LinkComponent={Link} to="/" color='inherit'>logo</Button>
+          <Button style={padding} LinkComponent={Link} variant='text' disabled to="/authors" color="inherit">authors</Button>
+          <Button style={padding} LinkComponent={Link} variant='text' disabled to="/books" color="inherit">books</Button>
+          <Button style={padding} LinkComponent={Link} to="/login" variant='text' color="inherit">login</Button>
           </>
           
         )}
-      </div>
+
+        </Toolbar>
+        
+      </AppBar>
 
       <Routes>
         <Route path='/' element={<Authors authors={authorsResult.data.allAuthors} isLoggedIn={isLoggedIn} />} />

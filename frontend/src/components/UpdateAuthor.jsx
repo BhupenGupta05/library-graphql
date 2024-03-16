@@ -2,6 +2,7 @@ import { useState } from "react"
 import EDIT_AUTHOR from '../graphql/mutations/editAuthor'
 import ALL_AUTHORS from "../graphql/queries/allAuthors"
 import { useMutation, useQuery } from "@apollo/client"
+import { Button, FormControl, Input, TextField, Typography } from '@mui/material'
 
 const UpdateAuthor = () => {
   const authorsResult = useQuery(ALL_AUTHORS)
@@ -39,8 +40,8 @@ const UpdateAuthor = () => {
 
   return (
     <div>
-      <h2>Set Birthyear</h2>
-      <form onSubmit={submit}>
+      <Typography variant="h4" sx={{my:2, ml:2}}>Set Birthyear</Typography>
+      <FormControl onSubmit={submit} sx={{ml:2}}>
         <div>
           <label>Select author: </label>
           <select
@@ -56,14 +57,16 @@ const UpdateAuthor = () => {
 
         <div>
           <label>Born: </label>
-          <input
+          <TextField
+          label='Year'
+          variant="outlined"
             type="number"
             value={born}
             onChange={({ target }) => setBorn(target.value)}
           />
         </div>
-        <button type="submit">Update Author</button>
-      </form>
+        <Button type="submit" variant="contained" color="secondary" sx={{my:2}}>Update Author</Button>
+      </FormControl>
     </div>
   );
 };

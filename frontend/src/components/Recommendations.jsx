@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client"
 import USER from '../graphql/queries/userDetails'
+import { Table, TableCell, TableHead, TableRow, Typography } from "@mui/material"
 
 const Books = ({books}) => { 
 
   const userResult = useQuery(USER)
-  console.log(userResult)
 
   if(userResult.loading) {
     return (
@@ -12,28 +12,28 @@ const Books = ({books}) => {
     )
   }
   const filteredBooks = books.filter(book => book.genres.includes(userResult.data.me.favouriteGenre))
-  
+
     return (
       <div>
-        <h2>recommendations</h2>
-        <p>books in your favourite genre: <strong>{userResult.data.me.favouriteGenre}</strong></p>
+        <Typography variant="h4" sx={{ m:2}}>recommendations</Typography>
+        <Typography variant="body1" sx={{ m:2}}>books in your favourite genre: <strong>{userResult.data.me.favouriteGenre}</strong></Typography>
   
-        <table>
-          <tbody>
-            <tr>
-              <th></th>
-              <th>author</th>
-              <th>published</th>
-            </tr>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>author</TableCell>
+              <TableCell>published</TableCell>
+            </TableRow>
             {filteredBooks.map((a) => (
-              <tr key={a.title}>
-                <td>{a.title}</td>
-                <td>{a.author.name}</td>
-                <td>{a.published}</td>
-              </tr>
+              <TableRow key={a.title}>
+                <TableCell>{a.title}</TableCell>
+                <TableCell>{a.author.name}</TableCell>
+                <TableCell>{a.published}</TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableHead>
+        </Table>
 
       </div>
     )
