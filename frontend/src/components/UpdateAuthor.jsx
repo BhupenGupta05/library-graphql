@@ -2,7 +2,7 @@ import { useState } from "react"
 import EDIT_AUTHOR from '../graphql/mutations/editAuthor'
 import ALL_AUTHORS from "../graphql/queries/allAuthors"
 import { useMutation, useQuery } from "@apollo/client"
-import { Button, FormControl, Input, TextField, Typography } from '@mui/material'
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material'
 
 const UpdateAuthor = () => {
   const authorsResult = useQuery(ALL_AUTHORS)
@@ -16,9 +16,9 @@ const UpdateAuthor = () => {
   const options =
     authorsResult.data && authorsResult.data.allAuthors
       ? authorsResult.data.allAuthors.map((author) => (
-          <option key={author.name} value={author.name}>
+          <MenuItem key={author.name} value={author.name}>
             {author.name}
-          </option>
+          </MenuItem>
         ))
       : []
 
@@ -41,30 +41,27 @@ const UpdateAuthor = () => {
   return (
     <div>
       <Typography variant="h4" sx={{my:2, ml:2}}>Set Birthyear</Typography>
-      <FormControl onSubmit={submit} sx={{ml:2}}>
-        <div>
-          <label>Select author: </label>
-          <select
+      <FormControl component='form' onSubmit={submit} sx={{ml:2}}>
+          <Select
             value={selectedAuthor}
             onChange={(e) => setSelectedAuthor(e.target.value)}
+            displayEmpty
           >
-            <option value="" disabled>
+            <MenuItem value="" disabled>
               Select an author
-            </option>
+            </MenuItem>
             {options}
-          </select>
-        </div>
+          </Select>
 
-        <div>
-          <label>Born: </label>
+
           <TextField
           label='Year'
           variant="outlined"
             type="number"
             value={born}
             onChange={({ target }) => setBorn(target.value)}
+            sx={{ marginTop: "2rem", marginRight:"2rem"}}
           />
-        </div>
         <Button type="submit" variant="contained" color="secondary" sx={{my:2}}>Update Author</Button>
       </FormControl>
     </div>
