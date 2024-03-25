@@ -20,11 +20,11 @@ const authLink = setContext((_, { headers }) => {
 })
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000',
+  uri: 'https://library-graphql-backend.onrender.com',
 })
 
 const wsLink = new GraphQLWsLink(  
-  createClient({ url: 'ws://localhost:4000' })
+  createClient({ url: 'wss://library-graphql-backend.onrender.com' })
 )
 
 const splitLink = split(  
