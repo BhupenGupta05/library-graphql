@@ -89,7 +89,7 @@ const App = () => {
         <Notify errorMessage={errorMessage}/>
         {isLoggedIn ? (
           <>
-          <Button style={padding} LinkComponent={Link} to="/" color="inherit" variant='text'>logo</Button>
+          <Button style={padding} LinkComponent={Link} to="/" color="inherit" variant='text'>Home</Button>
           <Button style={padding} LinkComponent={Link} to="/authors" color="inherit" variant='text'>authors</Button>
           <Button style={padding} LinkComponent={Link} to="/books" color="inherit" variant='text'>books</Button>
             <Button style={padding} LinkComponent={Link} to="/add" color="inherit" variant='text'>add book</Button>
